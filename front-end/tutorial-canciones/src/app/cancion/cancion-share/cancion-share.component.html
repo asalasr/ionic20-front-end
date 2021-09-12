@@ -1,0 +1,39 @@
+<app-header></app-header>
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="card mx-3 my-5">
+          <div class="row">
+            <div class="col-12 text-center">
+              <p class="mt-5 mb-2 fs-3 fw-bold">Compartir con</p>
+            </div>
+          </div>
+          <form class="mx-5 my-3" [formGroup]="cancionForm" (ngSubmit)="compartirCancion()">
+            <div class="form-group my-2">
+              <div class="row">
+                <div class="col-10">
+
+                  <input type="text" class="form-control" formControlName="usuarios" placeholder="Nombre del usuario" >
+
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6 text-end">
+                <button type="submit" class="btn btn-primary" [disabled]="!cancionForm.valid">Si</button>
+              </div>
+              <div class="col-6 text-star">
+                <button class="btn btn-danger" (click)="cancelarCompatir()">No</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<app-footer></app-footer>
+<div *ngIf="error">
+  <div class="alert alert-danger" role="alert">
+    Usuario o contraseña incorrectos
+  </div>
+</div>
