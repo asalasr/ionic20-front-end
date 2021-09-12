@@ -3,12 +3,19 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
     "start:es": "ng serve --configuration=es",
-    "start:en": "ng serve --configuration=en"
+    "start:en": "ng serve --configuration=en",
+    "preinstall": "npm install -g @angular/cli @angular/compiler-cli typescript",
+    "postinstall": "ng build --prod"
+  },
+  "engines": {
+    "node": "12.17.0",
+    "npm": "6.14.4"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +31,10 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "bootstrap": "^5.1.1",
     "bootstrap-icons": "^1.5.0",
+    "express": "^4.17.1",
     "ng2-opd-popup": "^1.1.21",
     "ngx-toastr": "^14.0.0",
+    "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
