@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cancion } from '../cancion';
+import { CancionService } from '../cancion.service';
 
 @Component({
   selector: 'app-cancion-detail',
@@ -17,8 +18,11 @@ export class CancionDetailComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
-    private routerPath: Router
+    private routerPath: Router,
+    private cancionService: CancionService,
   ) { }
+
+  mostrarCancionesComp: Array<Cancion>
 
   ngOnInit() {
     this.userId = parseInt(this.router.snapshot.params.userId)
@@ -36,6 +40,15 @@ export class CancionDetailComponent implements OnInit {
 
   compartirCancion(){
     this.routerPath.navigate([`/canciones/share/${this.cancion.id}/${this.userId}/${this.token}`])
+  }
+
+  getCanciones():void{
+    this.cancionService.getCancionesUsuario(this.userId, this.token)
+    .subscribe(canciones => {
+
+      this.mostrarCancionesComp = canciones['compartidas']
+
+    })
   }
 
 }

@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Album } from '../album';
+import { AlbumService } from '../album.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -18,7 +20,10 @@ export class AlbumDetailComponent implements OnInit {
   constructor(
     private routerPath: Router,
     private router: ActivatedRoute,
+    private albumService: AlbumService
   ) { }
+
+  mostrarAlbumesComp: Array<Album>
 
   ngOnInit() {
     this.userId = parseInt(this.router.snapshot.params.userId)
@@ -41,4 +46,14 @@ export class AlbumDetailComponent implements OnInit {
     this.routerPath.navigate([`/albumes/share/${this.album.id}/${this.userId}/${this.token}`])
   }
 
+  comentarAlbum(){
+    this.routerPath.navigate([`/albumes/coment/${this.album.id}/${this.userId}/${this.token}`])
+  }
+
+  getAlbumes():void{
+    this.albumService.getAlbumes(this.userId, this.token)
+    .subscribe(albumes => {
+      this.mostrarAlbumesComp = albumes['compartidas']
+    })
+  }
 }

@@ -11,6 +11,7 @@ import { AlbumJoinCancionComponent } from './album/album-join-cancion/album-join
 import { UsuarioSignupComponent } from './usuario/usuario-signup/usuario-signup.component';
 import { AlbumShareComponent } from './album/album-share/album-share.component';
 import { CancionShareComponent } from './cancion/cancion-share/cancion-share.component';
+import { AlbumComentsComponent } from './album/album-coments/album-coments.component';
 
 const routes: Routes = [
   {
@@ -63,7 +64,11 @@ const routes: Routes = [
   {
     path: 'canciones/share/:cancionId/:userId/:userToken',
     component: CancionShareComponent
-  }
+  },
+  {
+    path: 'albumes/coment/:albumId/:userId/:userToken',
+    component: AlbumComentsComponent
+  },
 ];
 
 @NgModule({
