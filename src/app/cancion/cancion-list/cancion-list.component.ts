@@ -27,30 +27,30 @@ export class CancionListComponent implements OnInit {
   indiceSeleccionado: number = 0
 
   ngOnInit() {
-    if(!parseInt(this.router.snapshot.params.userId) || this.router.snapshot.params.userToken === " "){
+    if (!parseInt(this.router.snapshot.params.userId) || this.router.snapshot.params.userToken === " ") {
       this.showError("No hemos podido identificarlo, por favor vuelva a iniciar sesión.")
     }
-    else{
+    else {
       this.userId = parseInt(this.router.snapshot.params.userId)
       this.token = this.router.snapshot.params.userToken
       this.getCanciones();
     }
   }
 
-  getCanciones():void{
+  getCanciones(): void {
     this.cancionService.getCancionesUsuario(this.userId, this.token)
-    .subscribe(canciones => {
+      .subscribe(canciones => {
 
-      this.mostrarCanciones = canciones['propios']
-      this.mostrarCancionesComp = canciones['compartidas']
+        this.mostrarCanciones = canciones['propios']
+        this.mostrarCancionesComp = canciones['compartidas']
 
-      for (let c of canciones['compartidas']) {
-        this.mostrarCanciones.push(c)
-      }
-      this.canciones = this.mostrarCanciones
+        for (let c of canciones['compartidas']) {
+          this.mostrarCanciones.push(c)
+        }
+        this.canciones = this.mostrarCanciones
 
-      this.onSelect(this.mostrarCanciones[0], 0)
-    })
+        this.onSelect(this.mostrarCanciones[0], 0)
+      })
   }
 
   onSelect(cancion: Cancion, indice: number){
@@ -59,17 +59,18 @@ export class CancionListComponent implements OnInit {
     this.cancionService.getAlbumesCancion(cancion.id)
     .subscribe(albumes => {
       this.cancionSeleccionada.albumes = albumes
+      this.getComentarios(this.cancionSeleccionada.id)
+      this.cancionSeleccionada.esCompartido = this.esCompartida(this.cancionSeleccionada.id)
     },
     error => {
       this.showError(`Ha ocurrido un error: ${error.message}`)
     })
-
   }
 
-  buscarCancion(busqueda: string){
+  buscarCancion(busqueda: string) {
     let cancionesBusqueda: Array<Cancion> = []
-    this.canciones.map( cancion => {
-      if(cancion.titulo.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase())){
+    this.canciones.map(cancion => {
+      if (cancion.titulo.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase())) {
         cancionesBusqueda.push(cancion)
       }
     })
@@ -77,22 +78,22 @@ export class CancionListComponent implements OnInit {
     this.mostrarCancionesComp = cancionesBusqueda
   }
 
-  eliminarCancion(){
+  eliminarCancion() {
     this.cancionService.eliminarCancion(this.cancionSeleccionada.id)
-    .subscribe(cancion => {
-      this.ngOnInit()
-      this.showSuccess()
-    },
-    error=> {
-      this.showError("Ha ocurrido un error. " + error.message)
-    })
+      .subscribe(cancion => {
+        this.ngOnInit()
+        this.showSuccess()
+      },
+        error => {
+          this.showError("Ha ocurrido un error. " + error.message)
+        })
   }
 
-  irCrearCancion(){
+  irCrearCancion() {
     this.routerPath.navigate([`/canciones/create/${this.userId}/${this.token}`])
   }
 
-  showError(error: string){
+  showError(error: string) {
     this.toastr.error(error, "Error de autenticación")
   }
 
@@ -100,14 +101,26 @@ export class CancionListComponent implements OnInit {
     this.toastr.success(`La canción fue eliminada`, "Eliminada exitosamente");
   }
 
-  esCompartida(idCancion: number):boolean{
+  esCompartida(idCancion: number): boolean {
 
     for (let c of this.mostrarCancionesComp) {
 
-      if (c.id == idCancion){
+      if (c.id == idCancion) {
         return true
       }
     }
     return false
   }
+
+  getComentarios(id: number):void{
+    this.cancionService.getComments(id, this.token)
+    .subscribe( comentarios => {
+      this.cancionSeleccionada.comentarios = comentarios['comments']
+    },
+    error => {
+      console.log(error)
+    })
+
+  }
+
 }

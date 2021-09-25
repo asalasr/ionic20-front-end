@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-12 col-md-4">
+      <div class="row">
+          <div class="col-12 col-md-8">
+              <h5>Comentarios</h5>
+          </div>
+          <div class="col-12 col-md-4">
+              <ul>
+                  <li style="list-style:none;">
+                      <button *ngIf="album" (click)="saveComent()" type="button" class="btn btn-outline-success">
+                          <fa-icon [icon]="faEdit"></fa-icon>
+                      </button>
+                  </li>
+                  <li style="list-style:none;">
+                      <button *ngIf="album" (click)="deleteComent()" type="button" class="btn btn-outline-danger mt-3">
+                          <fa-icon [icon]="faTrashAlt"></fa-icon>
+                      </button>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <div class="col-12 col-md-8">
+      <div class="row">
+          <div class="col-12">
+            <form  *ngIf="album" [formGroup]="formComent">
+                  <textarea name="coment" rows="4" id="coment" class="form-control" [class.is-invalid]="formComent.controls.coment.invalid" [class.is-valid]="!formComent.controls.coment.invalid && formComent.controls.coment.value != ''" formControlName="coment" placeholder="Coment..."></textarea>
+              </form>
+          </div>
+          <div *ngFor="let comment of album?.comentarios" >
+              <div class="row mt-4">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-2 col-md-2 col-lg-2">
+                            <img src="../../../assets/user_nick.png" width="50px" height="50px"/>
+                          </div>
+                          <div class="col-6 col-md-6 col-lg-6">
+                              <h5>{{comment.name_user}}</h5>
+                          </div>
+                          <div class="col-4 col-md-4 col-lg-4">
+                            <i class="text-dark">{{comment.date | date }}</i>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12">
+                          <p class="text-muted"></p>
+                        </div>
+                        <p>{{comment.message}}</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

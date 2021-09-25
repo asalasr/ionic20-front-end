@@ -36,6 +36,7 @@
       </div>
       <div class="col-lg-8">
         <app-cancion-detail (deleteCancion)="eliminarCancion()" [cancion]="cancionSeleccionada"></app-cancion-detail>
+        <app-cancion-coments *ngIf="cancionSeleccionada" [cancion]="cancionSeleccionada"></app-cancion-coments>
       </div>
     </div>
   </div>

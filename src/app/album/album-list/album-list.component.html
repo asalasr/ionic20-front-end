@@ -31,12 +31,12 @@
                 </tr>
             </tbody>
           </table>
-
         </div>
       </div>
     </div>
     <div class="col-lg-8">
       <app-album-detail (deleteAlbum)="eliminarAlbum()" [album]="albumSeleccionado"></app-album-detail>
+      <app-album-coments [album]="albumSeleccionado"></app-album-coments>
     </div>
   </div>
 </div>

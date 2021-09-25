@@ -25,6 +25,7 @@ export class AlbumListComponent implements OnInit {
   mostrarAlbumesComp: Array<Album>
   albumSeleccionado: Album
   indiceSeleccionado: number
+  commentariosAlbumSeccionado: Array<any>;
 
   ngOnInit() {
     if(!parseInt(this.router.snapshot.params.userId) || this.router.snapshot.params.userToken === " "){
@@ -69,17 +70,31 @@ export class AlbumListComponent implements OnInit {
   }
 
   onSelect(a: Album, index: number){
-   this.indiceSeleccionado = index
+    this.indiceSeleccionado = index
     this.albumSeleccionado = a
     this.albumService.getCancionesAlbum(a.id, this.token)
     .subscribe(canciones => {
       this.albumSeleccionado.canciones = canciones
       this.albumSeleccionado.interpretes = this.getInterpretes(canciones)
+      this.getComentarios(this.albumSeleccionado.id)
+      this.albumSeleccionado.esCompartido = this.esCompartida(this.albumSeleccionado.id)
     },
     error =>{
       this.showError("Ha ocurrido un error, " + error.message)
     })
   }
+
+  getComentarios(id: number):void{
+    this.albumService.getComments(id, this.token)
+    .subscribe( comentarios => {
+      this.albumSeleccionado.comentarios = comentarios['comments']
+    },
+    error => {
+      console.log(error)
+    })
+
+  }
+
 
   getInterpretes(canciones: Array<Cancion>): Array<string>{
     var interpretes: Array<string> = []
@@ -147,4 +162,6 @@ export class AlbumListComponent implements OnInit {
     }
     return false
   }
+
+
 }
